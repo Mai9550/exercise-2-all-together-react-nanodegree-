@@ -21,11 +21,33 @@ class App extends Component {
   If the user did not type anything, he/she should not be
   allowed to submit.
   */
+
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+  }
+
   isDisabled = () => {
     return false;
   };
 
+  handleChange=(event)=> {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit=(event)=> {
+    
+    event.preventDefault();
+  }
+
+  addMessage=(message)=>{
+    messages.push({"username":users[0].username,"text":message})
+    console.log(messages)
+    } 
+
   render() {
+    
     return (
       <div className="App">
         <header className="App-header">
@@ -51,17 +73,25 @@ class App extends Component {
             </ul>
 
             <div>
-              <form className="input-group">
-                <input type="text" className="form-control" placeholder="Enter your message..." />
+              <form className="input-group"  onSubmit={this.handleSubmit}>
+
+                <input type="text" className="form-control" placeholder="Enter your message..." 
+                value={this.state.value} 
+                onChange={this.handleChange}  />
+
                 <div className="input-group-append">
-                  <button className="btn submit-button" disabled={this.isDisabled()}>
+
+                  <button className="btn submit-button" 
+                  onClick={()=>this.addMessage(this.state.value)}
+                  disabled={this.isDisabled()}>
                     SEND
                   </button>
+
                 </div>
               </form>
             </div>
           </div>
-
+{console.log(this.state.value)}
           <div className="chat-window">
             <h2>Super Awesome Chat</h2>
             <div className="name sender">{users[1].username}</div>
