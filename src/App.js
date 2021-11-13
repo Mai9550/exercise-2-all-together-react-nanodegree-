@@ -17,7 +17,8 @@ class App extends Component {
   */
 
     state = {
-      value: '',
+      firstValue: '',
+      secondValue:'',
       users:[{ username: 'Amy' }, { username: 'John' }],
       messages:[
         { username: 'Amy', text: 'Hi, Jon!' },
@@ -32,8 +33,12 @@ class App extends Component {
     return false;
   };
 
-  handleChange=(event)=> {
-    this.setState({value: event.target.value});
+  handleFirstChange=(event)=> {
+    this.setState({firstValue: event.target.value});
+  }
+
+  handleSecondChange=(event)=> {
+    this.setState({secondValue: event.target.value});
   }
 
   handleSubmit=(event)=> {
@@ -71,7 +76,6 @@ class App extends Component {
                     message.username === this.state.users[0].username ? 'message sender' : 'message recipient'
                   }
                 >
-                  {console.log(message)}
                   <p>{`${message.username}: ${message.text}`}</p>
                 </li>
               ))}
@@ -81,13 +85,16 @@ class App extends Component {
               <form className="input-group"  onSubmit={this.handleSubmit}>
 
                 <input type="text" className="form-control" placeholder="Enter your message..." 
-                value={this.state.value} 
-                onChange={this.handleChange}  />
+                value={this.state.firstValue} 
+                onChange={this.handleFirstChange}  />
 
                 <div className="input-group-append">
 
                   <button className="btn submit-button" 
-                  onClick={()=>this.addMessage(this.state.value)}
+                  onClick={()=>this.addMessage({
+                    username: 'Amy',
+                    text: this.state.firstValue,
+                  })}
                   disabled={this.isDisabled()}>
                     SEND
                   </button>
@@ -96,7 +103,7 @@ class App extends Component {
               </form>
             </div>
           </div>
-{console.log(this.state.value)}
+
           <div className="chat-window">
             <h2>Super Awesome Chat</h2>
             <div className="name sender">{this.state.users[1].username}</div>
@@ -114,10 +121,17 @@ class App extends Component {
             </ul>
 
             <div>
-              <form className="input-group">
-                <input type="text" className="form-control" placeholder="Enter your message..." />
+              <form className="input-group" onSubmit={this.handleSubmit}>
+                <input type="text" className="form-control" placeholder="Enter your message..."    
+                   value={this.state.secondValue} 
+                   onChange={this.handleSecondChange} />
                 <div className="input-group-append">
-                  <button className="btn submit-button" disabled={this.isDisabled()}>
+                  <button className="btn submit-button" 
+                   onClick={()=>this.addMessage({
+                    username: 'John',
+                    text: this.state.secondValue,
+                  })}
+                  disabled={this.isDisabled()}>
                     SEND
                   </button>
                 </div>
